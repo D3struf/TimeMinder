@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TimeMinder</title>
+
+  <link rel="shortcut icon" href="./assets/logo.svg" type="image/x-icon">
+
+  <link href="./output.css" rel="stylesheet">
+</head>
+<body>
+  <section class="mt-24 mr-6 bg-white w-full shadow-xl border border-gray-50 rounded-lg py-5 px-8">
+    <form id="add-task-form" class="flex flex-col gap-2">
+      <div class="flex flex-col">
+        <label for="deadline">Deadline&#42</label>
+        <input class="border border-gray-300 rounded-md px-4 py-1" type="date" id="deadline" name="deadline" >
+      </div>
+      <div class="flex flex-col">
+        <label for="title">Title&#42</label>
+        <input class="border border-gray-300 rounded-md px-4 py-1" type="text" id="title" name="title" >
+      </div>
+      <div class="flex flex-col">
+        <label for="description">Description&#42</label>
+        <textarea class="border border-gray-300 rounded-md px-4 py-1" id="description" name="description" ></textarea>
+      </div>
+      <div class="flex flex-col">
+        <label for="type" class="block mb-2 text-sm font-medium text-gray-900 ">Type&#42</label>
+        <select id="type" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+          <option selected>Choose a task type</option>
+          <option value="habit">Habit</option>
+          <option value="personal">Personal</option>
+          <option value="work">Work</option>
+          <option value="school">School</option>
+        </select>
+      </div>
+      <div class="flex flex-col">
+        <label for="link" class="block mb-2 text-sm font-medium text-gray-900 ">Link a &#42</label>
+        <select id="link" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+          <option calue="" selected> </option>
+          <option value="habit">Habit</option>
+          <option value="personal">Personal</option>
+          <option value="work">Work</option>
+          <option value="school">School</option>
+        </select>
+      </div>
+      <div class="flex flex-col">
+        <label for="repeat">Repeat Every&#42</label>
+        <div id="repeat" class="overflow-x-scroll flex flex-row gap-3 w-full custom-scrollbar">
+          
+        </div>
+      </div>
+      <div class="flex flex-col">
+        <label for="until">Until&#42</label>
+        <input class="border border-gray-300 rounded-md px-4 py-1" type="date" id="until" name="until" >
+      </div>
+      
+      <button type="submit" class="bg-purple-900 rounded-md w-full text-white font-bold text-base py-2">Create Task</button>
+    </form>
+  </section>
+</body>
+</html>
