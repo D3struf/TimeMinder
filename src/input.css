@@ -3,11 +3,29 @@
 @tailwind utilities;
 
 /* add the code bellow */ 
-.custom-scrollbar::-webkit-scrollbar {
-  display: none;
+@layer utilities {
+  .custom-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .custom-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
 }
 
-.custom-scrollbar {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+.repeat-container {
+  width: 390px;
+  height: 35px;
+  position: absolute;
+  overflow: hidden;
+}
+
+#repeat {
+  display: flex;
+  gap: 10px;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
 }

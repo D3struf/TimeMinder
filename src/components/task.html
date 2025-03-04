@@ -11,10 +11,14 @@
   <link href="./output.css" rel="stylesheet">
 </head>
 <body>
-  <section class="pt-24">
+  <section class="pt-24 max-md:px-10">
     <h1 class="text-black font-bold capitalize">Today Task</h1>
 
-    <ul id="task-list" class="h-[580px] overflow-y-auto">
+    <div id="no-tasks" class="flex flex-col gap-3 justify-center items-center w-full h-[580px]">
+      <img src="https://cdn-icons-png.flaticon.com/512/5058/5058446.png" height="240" width="240" alt="no-task">
+      <h1 class="text-gray-400 font-bold text-lg w-full text-center -ml-12">No Task For Today</h1>
+    </div>
+    <ul id="task-list" class=" h-fit max-h-[580px] overflow-y-auto">
       <!-- Task cards will be dynamically added here -->
     </ul>
   </section>
