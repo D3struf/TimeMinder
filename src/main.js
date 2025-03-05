@@ -313,15 +313,20 @@ function toggleDaySelection(input, task) {
 
 function handleEditTask(taskIndex) {
   const task = tasks[taskIndex];
+  console.log("TASK", taskIndex);
 
   // Populate the form fields with existing task data
-  document.getElementById("edit-mode").value = "true";
+  document.getElementById("edit-mode").value = `true-${taskIndex}`;
   document.getElementById("title").value = task.title;
   document.getElementById("description").value = task.description;
   document.getElementById("type").value = task.type;
   document.getElementById("link").value = task.link;
-  document.getElementById("deadline").value = task.deadline;
+  // document.getElementById("deadline").value = task.deadline;
   document.getElementById("until").value = task.until;
+
+  console.log("Setting deadline:", task.deadline);
+  document.getElementById("deadline").value = task.deadline;
+  console.log("After setting deadline:", document.getElementById("deadline").value);
   
   // Reset days selection and update with existing data
   resetDaysButtons();
@@ -338,62 +343,37 @@ function handleEditTask(taskIndex) {
 
   document.getElementById("submit-task").innerText = "Update Task";
   
-  // Save changes when submitting
-  const form = document.getElementById("add-task-form");
-  form.addEventListener("submit", async (event) => {
-    event.preventDefault();
-  
-    const editMode = document.getElementById("edit-mode").value;
-    const deadline = document.getElementById("deadline").value;
-    const title = document.getElementById("title").value;
-    const description = document.getElementById("description").value;
-    const type = document.getElementById("type").value;
-    const link = document.getElementById("link").value;
-    const until = document.getElementById("until").value;
+  // const form = document.getElementById("add-task-form");
+  // form.addEventListener("submit", (event) => {
+  //   event.preventDefault();
+  //   const editMode = document.getElementById("edit-mode").value;
+  //   console.log("EDIT: " + editMode);
 
-    console.log("Tasks: ", document.getElementById("deadline").value);
-    // Ensure required fields are provided
-    if (!deadline || !until) {
-      alert("Please enter a deadline and until date.");
-      return;
-    }
-  
-    if (daysArray.length === 0) {
-      alert("Please choose at least one day of the week.");
-      return;
-    }
-  
-    if (editMode) {
-      // Editing an existing task
-      const taskIndex = tasks.findIndex((task) => task.title === title);
-      console.log("Editing task:", title);
-      if (taskIndex !== -1) {
-        tasks[taskIndex] = {
-          ...tasks[taskIndex],
-          deadline,
-          title,
-          description,
-          type,
-          link,
-          until,
-          updatedAt: new Date().toISOString().split("T")[0],
-        };
+  //   if (editMode !== "true") return;
 
-        // Update Firestore
-        const taskDocRef = doc(db, "tasks", "myTasks");
-        await updateDoc(taskDocRef, { tasks });
-  
-        console.log("Task updated successfully!");
-      }
-    }
-  
-    // Reset form and update UI
-    document.getElementById("edit-mode").value = "false"; // Reset mode
-    document.getElementById("edit-task-id").value = ""; // Reset task ID
-    form.reset();
-    renderTask();
-    window.updateRates();
-  });  
+  //   const title = document.getElementById("title").value;
+  //   const taskIndex = tasks.findIndex((task) => task.title === title);
+
+  //   if (taskIndex !== -1) {
+  //     tasks[taskIndex] = {
+  //       ...tasks[taskIndex],
+  //       deadline: document.getElementById("deadline").value,
+  //       title,
+  //       description: document.getElementById("description").value,
+  //       type: document.getElementById("type").value,
+  //       link: document.getElementById("link").value,
+  //       until: document.getElementById("until").value,
+  //       updatedAt: new Date().toISOString().split("T")[0],
+  //     };
+  //   }
+
+  //   // Reset edit mode and form
+  //   document.getElementById("edit-mode").value = "false";
+  //   resetDaysButtons();
+  //   renderTask();
+  //   window.updateRates();
+  //   form.reset();
+  // });
 }
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -433,6 +413,7 @@ document.addEventListener("DOMContentLoaded", function() {
       form.addEventListener("submit", (event) => {
         event.preventDefault();
 
+        const editMode = document.getElementById("edit-mode").value;
         const deadline = document.getElementById("deadline").value;
         const title = document.getElementById("title").value;
         const description = document.getElementById("description").value;
@@ -440,88 +421,154 @@ document.addEventListener("DOMContentLoaded", function() {
         const link = document.getElementById("link").value;
         const until = document.getElementById("until").value;
 
-        const alertDiv = document.getElementById("alert");
-
-        if (!deadline || !until) {
-          alertDiv.classList.remove("hidden");
-          alertDiv.innerText = "Please enter a deadline and until date.";
-          setTimeout(() => {
-            alertDiv.classList.add("hidden");
-          }, 5000);
-          return;
-        }
-        
-        if (daysArray.length === 0) {
-          alertDiv.classList.remove("hidden");
-          alertDiv.innerText = "Please choose atleast one day of the week.";
-          setTimeout(() => {
-            alertDiv.classList.add("hidden");
-          }, 5000);
-          return;
-        }
-
-        const currentDay = new Date(deadline).getTime();
-        const untilDay = new Date(until).getTime();
-
-        if (currentDay < untilDay) {
-          alertDiv.classList.remove("hidden");
-          alertDiv.innerText = "The until date should be before the deadline.";
-          setTimeout(() => {
-            alertDiv.classList.add("hidden");
-          }, 5000);
-          return;
-        }
-
-        const generatedFutureDays = [];
-        const oneDay = 24 * 60 * 60 * 1000;
-
-        let nextDay = new Date().getTime();
-
-        // Iterate until reaching `untilDay`
-        while (nextDay <= untilDay) {
-          // Check if the day is in the daysArray selected
-          const generatedDay = new Date(nextDay);
-          if (daysArray.includes(generatedDay.getDay())) {
-            generatedFutureDays.push(generatedDay.toISOString().split("T")[0]);
+        if (editMode.split("-")[0] !== "true") {
+          const alertDiv = document.getElementById("alert");
+          if (!deadline || !until) {
+            alertDiv.classList.remove("hidden");
+            alertDiv.innerText = "Please enter a deadline and until date.";
+            setTimeout(() => {
+              alertDiv.classList.add("hidden");
+            }, 5000);
+            return;
           }
-          nextDay += oneDay;
-        }
-
-        const newTask = {
-          id: String(Date.now()),
-          deadline: deadline,
-          title: title,
-          description: description,
-          type: type,
-          link: link,
-          repeat: generatedFutureDays,
-          until: until,
-          complete: false,
-          createdAt: new Date().toISOString().split("T")[0],
-          updatedAt: new Date().toISOString().split("T")[0],
-        }
-
-        tasks.unshift(newTask);
-
-        const saveDB = async () => {
-          try {
-            const taskDocRef = doc(db, "tasks", "myTasks");
-        
-            await updateDoc(taskDocRef, {
-              tasks: arrayUnion(newTask)
-            });
-        
-            console.log("Task added successfully!");
-          } catch (e) {
-            console.error("Error adding task: ", e);
+          
+          if (daysArray.length === 0) {
+            alertDiv.classList.remove("hidden");
+            alertDiv.innerText = "Please choose atleast one day of the week.";
+            setTimeout(() => {
+              alertDiv.classList.add("hidden");
+            }, 5000);
+            return;
           }
-        };
+  
+          const currentDay = new Date(deadline).getTime();
+          const untilDay = new Date(until).getTime();
+  
+          if (currentDay < untilDay) {
+            alertDiv.classList.remove("hidden");
+            alertDiv.innerText = "The until date should be before the deadline.";
+            setTimeout(() => {
+              alertDiv.classList.add("hidden");
+            }, 5000);
+            return;
+          }
+  
+          const generatedFutureDays = [];
+          const oneDay = 24 * 60 * 60 * 1000;
+  
+          let nextDay = new Date().getTime();
+  
+          // Iterate until reaching `untilDay`
+          while (nextDay <= untilDay) {
+            // Check if the day is in the daysArray selected
+            const generatedDay = new Date(nextDay);
+            if (daysArray.includes(generatedDay.getDay())) {
+              generatedFutureDays.push(generatedDay.toISOString().split("T")[0]);
+            }
+            nextDay += oneDay;
+          }
+  
+          const newTask = {
+            id: String(Date.now()),
+            deadline: deadline,
+            title: title,
+            description: description,
+            type: type,
+            link: link,
+            repeat: generatedFutureDays,
+            until: until,
+            complete: false,
+            createdAt: new Date().toISOString().split("T")[0],
+            updatedAt: new Date().toISOString().split("T")[0],
+          }
+  
+          tasks.unshift(newTask);
+  
+          const saveDB = async () => {
+            try {
+              const taskDocRef = doc(db, "tasks", "myTasks");
+          
+              await updateDoc(taskDocRef, {
+                tasks: arrayUnion(newTask)
+              });
+          
+              console.log("Task added successfully!");
+            } catch (e) {
+              console.error("Error adding task: ", e);
+            }
+          };
+  
+          saveDB();
+          resetDaysButtons();
+          renderTask();
+          window.updateRates();
+          form.reset();
+        } else {
+          const index = editMode.split("-")[1]
 
-        saveDB();
-        resetDaysButtons();
-        renderTask();
-        window.updateRates();
-        form.reset();
+          const currentDay = new Date(deadline).getTime();
+          const untilDay = new Date(until).getTime();
+  
+          if (currentDay < untilDay) {
+            alertDiv.classList.remove("hidden");
+            alertDiv.innerText = "The until date should be before the deadline.";
+            setTimeout(() => {
+              alertDiv.classList.add("hidden");
+            }, 5000);
+            return;
+          }
+  
+          const generatedFutureDays = [];
+          const oneDay = 24 * 60 * 60 * 1000;
+  
+          let nextDay = new Date().getTime();
+  
+          // Iterate until reaching `untilDay`
+          while (nextDay <= untilDay) {
+            // Check if the day is in the daysArray selected
+            const generatedDay = new Date(nextDay);
+            if (daysArray.includes(generatedDay.getDay())) {
+              generatedFutureDays.push(generatedDay.toISOString().split("T")[0]);
+            }
+            nextDay += oneDay;
+          }
+
+          if (index !== -1) {
+            tasks[index] = {
+              ...tasks[index],
+              deadline: deadline,
+              title,
+              description: description,
+              type: type,
+              link: link,
+              until: until,
+              repeat: generatedFutureDays,
+              updatedAt: new Date().toISOString().split("T")[0],
+            };
+          }
+
+          const saveDB = async () => {
+            try {
+              const taskDocRef = doc(db, "tasks", "myTasks");
+          
+              await updateDoc(taskDocRef, {
+                tasks
+              });
+          
+              console.log("Task added successfully!");
+            } catch (e) {
+              console.error("Error adding task: ", e);
+            }
+          };
+
+          // Reset edit mode and form
+          saveDB();
+          document.getElementById("edit-mode").value = "false";
+          resetDaysButtons();
+          renderTask();
+          window.updateRates();
+          form.reset();
+        }
       });
 
       // Slide Functions for DAY BUTTONS
