@@ -588,12 +588,24 @@ video {
   }
 }
 
+.pointer-events-none {
+  pointer-events: none;
+}
+
+.pointer-events-auto {
+  pointer-events: auto;
+}
+
 .absolute {
   position: absolute;
 }
 
 .relative {
   position: relative;
+}
+
+.bottom-48 {
+  bottom: 12rem;
 }
 
 .left-0 {
@@ -616,52 +628,8 @@ video {
   top: 5rem;
 }
 
-.top-24 {
-  top: 6rem;
-}
-
 .top-32 {
   top: 8rem;
-}
-
-.top-96 {
-  top: 24rem;
-}
-
-.bottom-96 {
-  bottom: 24rem;
-}
-
-.bottom-24 {
-  bottom: 6rem;
-}
-
-.bottom-64 {
-  bottom: 16rem;
-}
-
-.bottom-56 {
-  bottom: 14rem;
-}
-
-.bottom-44 {
-  bottom: 11rem;
-}
-
-.bottom-52 {
-  bottom: 13rem;
-}
-
-.bottom-5 {
-  bottom: 1.25rem;
-}
-
-.bottom-4 {
-  bottom: 1rem;
-}
-
-.bottom-48 {
-  bottom: 12rem;
 }
 
 .z-50 {
@@ -746,6 +714,10 @@ video {
   height: 2rem;
 }
 
+.h-9 {
+  height: 2.25rem;
+}
+
 .h-96 {
   height: 24rem;
 }
@@ -787,6 +759,10 @@ video {
   width: 2rem;
 }
 
+.w-96 {
+  width: 24rem;
+}
+
 .w-full {
   width: 100%;
 }
@@ -801,6 +777,16 @@ video {
 
 .max-w-sm {
   max-width: 24rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
 }
 
 .cursor-pointer {
@@ -881,6 +867,10 @@ video {
   align-self: center;
 }
 
+.overflow-hidden {
+  overflow: hidden;
+}
+
 .overflow-y-auto {
   overflow-y: auto;
 }
@@ -919,6 +909,15 @@ video {
 
 .border-b-2 {
   border-bottom-width: 2px;
+}
+
+.border-t-4 {
+  border-top-width: 4px;
+}
+
+.border-blue-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(59 130 246 / var(--tw-border-opacity, 1));
 }
 
 .border-gray-200 {
@@ -1178,6 +1177,11 @@ video {
   color: rgb(0 0 0 / var(--tw-text-opacity, 1));
 }
 
+.text-blue-500 {
+  --tw-text-opacity: 1;
+  color: rgb(59 130 246 / var(--tw-text-opacity, 1));
+}
+
 .text-gray-400 {
   --tw-text-opacity: 1;
   color: rgb(156 163 175 / var(--tw-text-opacity, 1));
@@ -1245,24 +1249,6 @@ video {
 
 .ease-in-out {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* add the code bellow */
-
-.repeat-container {
-  width: 390px;
-  height: 35px;
-  position: absolute;
-  overflow: hidden;
-}
-
-#repeat {
-  display: flex;
-  gap: 10px;
-  pointer-events: none;
-  position: absolute;
-  top: 0;
-  left: 0;
 }
 
 .hover\:rotate-180:hover {
