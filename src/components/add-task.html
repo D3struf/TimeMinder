@@ -47,10 +47,10 @@
           <option value="school">School</option>
         </select>
       </div>
-      <div class="flex flex-col w-full">
+      <div class="flex flex-col w-full relative">
         <label for="repeat">Repeat Every&#42</label>
-        <div class="repeat-container absolute w-96 h-9 overflow-hidden bottom-48 z-50">
-          <div id="repeat" class=" flex flex-row gap-3 absolute top-0 left-0 pointer-events-none"></div>
+        <div class="repeat-container absolute w-96 h-9 overflow-hidden -bottom-9 z-50 max-md:max-w-sm max-md:w-full">
+          <div id="repeat" class=" flex flex-row gap-3 absolute top-0 left-0 pointer-events-none max-md:static max-md:flex max-md:flex-row max-md:overflow-x-scroll"></div>
         </div>
       </div>
       <div class="flex flex-col mt-5">

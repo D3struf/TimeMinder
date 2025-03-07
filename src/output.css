@@ -604,10 +604,6 @@ video {
   position: relative;
 }
 
-.bottom-48 {
-  bottom: 12rem;
-}
-
 .left-0 {
   left: 0px;
 }
@@ -630,6 +626,30 @@ video {
 
 .top-32 {
   top: 8rem;
+}
+
+.bottom-24 {
+  bottom: 6rem;
+}
+
+.bottom-10 {
+  bottom: 2.5rem;
+}
+
+.bottom-2 {
+  bottom: 0.5rem;
+}
+
+.-bottom-5 {
+  bottom: -1.25rem;
+}
+
+.-bottom-10 {
+  bottom: -2.5rem;
+}
+
+.-bottom-9 {
+  bottom: -2.25rem;
 }
 
 .z-50 {
@@ -1310,8 +1330,20 @@ video {
     width: 14rem;
   }
 
+  .max-md\:w-5 {
+    width: 1.25rem;
+  }
+
+  .max-md\:w-full {
+    width: 100%;
+  }
+
   .max-md\:min-w-56 {
     min-width: 14rem;
+  }
+
+  .max-md\:max-w-sm {
+    max-width: 24rem;
   }
 
   .max-md\:grid-cols-1 {

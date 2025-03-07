@@ -129,7 +129,10 @@ function renderTask() {
   }
 
   tasks.forEach((task, index) => {
-    if (task.deadline === new Date().toISOString().split("T")[0] || task.repeat.includes(new Date().toISOString().split("T")[0]) ) {
+    console.log(task.deadline.split("T")[0]);
+    console.log("Now: ", new Date().toISOString().split("T")[0]);
+    console.log("Repeat: ", task.repeat);
+    if (task.deadline.split("T")[0] === new Date().toISOString().split("T")[0] || task.repeat.includes(new Date().toISOString().split("T")[0]) ) {
       const listItem = document.createElement("li");
       listItem.classList = "flex flex-row justify-between py-3 border-b-2 border-gray-200";
       
@@ -295,7 +298,7 @@ function resetDaysButtons() {
     checkbox.classList.remove("bg-yellow-400", "border-yellow-400");
     checkbox.classList.add("bg-white", "border-gray-400");
   });
-  daysArray.length = 0;
+  // daysArray.length = 0;
 }
 
 function toggleDaySelection(input, task) {
@@ -421,8 +424,8 @@ document.addEventListener("DOMContentLoaded", function() {
         const link = document.getElementById("link").value;
         const until = document.getElementById("until").value;
 
+        const alertDiv = document.getElementById("alert");
         if (editMode.split("-")[0] !== "true") {
-          const alertDiv = document.getElementById("alert");
           if (!deadline || !until) {
             alertDiv.classList.remove("hidden");
             alertDiv.innerText = "Please enter a deadline and until date.";
@@ -457,6 +460,7 @@ document.addEventListener("DOMContentLoaded", function() {
           const oneDay = 24 * 60 * 60 * 1000;
   
           let nextDay = new Date().getTime();
+          console.log("Days: ", daysArray);
   
           // Iterate until reaching `untilDay`
           while (nextDay <= untilDay) {
@@ -505,6 +509,7 @@ document.addEventListener("DOMContentLoaded", function() {
           form.reset();
         } else {
           const index = editMode.split("-")[1]
+          console.log("Days", daysArray);
 
           const currentDay = new Date(deadline).getTime();
           const untilDay = new Date(until).getTime();
